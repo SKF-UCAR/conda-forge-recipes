@@ -1,0 +1,50 @@
+{% set name = "lrose-core" %}
+{% set version = "3.8.2" %}
+
+package:
+  name: {{ name|lower }}
+  version: {{ version }}
+
+source:
+  path: ../../../lrose-core/codebase/
+
+build:
+  number: 0
+  script: |   #\u0022
+    FILE=./build 
+    [ -d "$FILE" ] &&  rm -rf ./build/* || mkdir build;
+    cd build
+    cmake .. -DCMAKE_INSTALL_PREFIX=$PREFIX
+    cmake --build . --config Release
+    cmake --install .
+
+requirements:
+  build:
+    - cmake
+    - make
+    - {{ compiler('cxx') }}
+test:
+  imports:
+    - ctest
+  requires:
+    - gtest
+  # commands:
+  #   - InsDevice_TEST
+
+about:
+  home: https://github.com/simplejson/simplejson
+  summary: 'Simple, fast, extensible JSON encoder/decoder for Python'
+  description: |
+    simplejson is a simple, fast, complete, correct and extensible
+    JSON <https://json.org> encoder and decoder for Python 2.5+ and
+    Python 3.3+. It is pure Python code with no dependencies, but includes
+    an optional C extension for a serious speed boost.
+  license: MIT
+  license_family: MIT
+  license_file: LICENSE.txt
+  # doc_url: https://simplejson.readthedocs.io/
+  # dev_url: https://github.com/simplejson/simplejson
+
+extra:
+  recipe-maintainers:
+    - SKF

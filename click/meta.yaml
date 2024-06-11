@@ -1,0 +1,42 @@
+{% set name = "click" %}
+{% set version = "8.1.7" %}
+
+package:
+  name: {{ name|lower }}
+  version: {{ version }}
+
+source:
+  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/click-{{ version }}.tar.gz
+  sha256: ca9853ad459e787e2192211578cc907e7594e294c7ccc834310722b41b9ca6de
+
+build:
+  skip: true  # [py<37]
+  script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+  number: 0
+
+requirements:
+  host:
+    - python
+    - pip
+  run:
+    - python
+    - colorama  # [win]
+    - importlib-metadata  # [py<38]
+
+test:
+  imports:
+    - click
+  commands:
+    - pip check
+  requires:
+    - pip
+
+about:
+  home: https://palletsprojects.com/p/click/
+  summary: Composable command line interface toolkit
+  license: BSD-3-Clause
+  license_file: LICENSE.rst
+
+extra:
+  recipe-maintainers:
+    - skf-cardinalpeak
