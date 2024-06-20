@@ -1,0 +1,76 @@
+{% set name = "netcdf" %}
+{% set version = "v4.9.2" %}
+
+package:
+  name: {{ name|lower }}
+  version: {{ version }}
+
+source:
+  git_url: https://github.com/Unidata/netcdf-c.git
+  git_tag: v4.9.2
+  git_depth: -1
+  # folder: src/
+
+build:
+  # script_env:
+    # - INSTALL_PREFIX=../out
+    # - DESTDIR=../out
+  number: 0
+#   script: |   #\u0022
+#     FILE=./build
+#     [ -d "$FILE" ] &&  rm -rf ./build/* || mkdir build;
+#     cd build
+#     cmake .. -DCMAKE_INSTALL_PREFIX=$PREFIX
+#     cmake --build . --config Release
+#     cmake --install .
+
+requirements:
+  build:
+    - git
+    - cmake
+    - make
+    - {{ compiler('c') }}
+    - {{ compiler('cxx') }}
+    - hdf5
+    - zlib
+  host:
+    - hdf5
+    - curl
+    - zlib
+  run:
+    - hdf5
+    - curl
+test:
+  # imports:
+  #   - ctest
+  # requires:
+  #   - gtest
+  script_env:
+    - INSTALL_PREFIX=./out
+  commands:
+    - ctest
+
+about:
+  home: https://github.com/Unidata/netcdf-c.git
+  summary: "Unidata NetCDF"
+  description: |
+    The Unidata network Common Data Form (netCDF) 
+    is an interface for scientific data access and a 
+    freely-distributed software library that provides an 
+    implementation of the interface. The netCDF library also 
+    defines a machine-independent format for representing 
+    scientific data. Together, the interface, library, and 
+    format support the creation, access, and sharing of 
+    scientific data. The current netCDF software provides C 
+    interfaces for applications and data. Separate software 
+    distributions available from Unidata provide Java, Fortran, 
+    Python, and C++ interfaces. They have been tested on various 
+    common platforms.
+
+  license: MIT
+  license_family: MIT
+  license_file: LICENSE.txt
+
+extra:
+  recipe-maintainers:
+    - SKF

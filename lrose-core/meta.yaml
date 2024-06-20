@@ -1,49 +1,67 @@
-{% set name = "lrose-core" %}
-{% set version = "3.8.2" %}
+# {% set name = "lrose-core" %}
+# {% set version = "3.8.2" %}
 
 package:
-  name: {{ name|lower }}
-  version: {{ version }}
+  # name: {{ name|lower }}
+  # version: {{ version }}
+  name: "lrose-core"
+  version: "3.0.0"
 
 source:
-  path: ../../../lrose-core/codebase/
+  path: ../../../lrose-core/
+  folder: out/
 
 build:
-  number: 0
-  script: |   #\u0022
-    FILE=./build 
-    [ -d "$FILE" ] &&  rm -rf ./build/* || mkdir build;
-    cd build
-    cmake .. -DCMAKE_INSTALL_PREFIX=$PREFIX
-    cmake --build . --config Release
-    cmake --install .
+  run_exports:
+    - libnetcdf
+    - l
+  script_env:
+    - INSTALL_PREFIX=../out
+    - DESTDIR=../out
+#   number: 0
+#   script: |   #\u0022
+#     FILE=./build
+#     [ -d "$FILE" ] &&  rm -rf ./build/* || mkdir build;
+#     cd build
+#     cmake .. -DCMAKE_INSTALL_PREFIX=$PREFIX
+#     cmake --build . --config Release
+#     cmake --install .
 
 requirements:
   build:
+    - git
     - cmake
     - make
     - {{ compiler('cxx') }}
 test:
-  imports:
-    - ctest
-  requires:
-    - gtest
-  # commands:
-  #   - InsDevice_TEST
+  # imports:
+  #   - ctest
+  # requires:
+  #   - gtest
+  script_env:
+    - INSTALL_PREFIX=./out
+  commands:
+    - $INSTALL_PREFIX/bin/RadMon -h
+    - $INSTALL_PREFIX/bin/HawkEye -h
 
 about:
-  home: https://github.com/simplejson/simplejson
-  summary: 'Simple, fast, extensible JSON encoder/decoder for Python'
+  home: https://github.com/NCAR/lrose-core
+  summary: "LROSE Lidar Radar Open Source E"
   description: |
-    simplejson is a simple, fast, complete, correct and extensible
-    JSON <https://json.org> encoder and decoder for Python 2.5+ and
-    Python 3.3+. It is pure Python code with no dependencies, but includes
-    an optional C extension for a serious speed boost.
+    LROSE - The Lidar Radar Open Software Environment
+    LROSE is a co-operative project between:
+      Dept. of Atmospheric Science at Colorado State University (CSU) and the
+      The Earth Observing Lab at the National Center for Atmospheric Research (NCAR).
+    LROSE is funded by the National Science Foundation.
+
+    LROSE CORE REPOSITORY
+      This GitHub distribution contains the core software for LROSE.
+
+    To download this repository from GitHub, run:
+      git clone https://github.com/NCAR/lrose-core
   license: MIT
   license_family: MIT
   license_file: LICENSE.txt
-  # doc_url: https://simplejson.readthedocs.io/
-  # dev_url: https://github.com/simplejson/simplejson
 
 extra:
   recipe-maintainers:
