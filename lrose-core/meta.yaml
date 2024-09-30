@@ -8,13 +8,14 @@ package:
   version: "3.0.0"
 
 source:
-  path: ../../../lrose-core/
-  folder: out/
+  # path: ../../../lrose-core/
+  git_url: https://github.com/NCAR/lrose-core.git
+  git_rev: main
+  # folder: out/
 
 build:
   run_exports:
     - libnetcdf
-    - l
   script_env:
     - INSTALL_PREFIX=../out
     - DESTDIR=../out
@@ -29,10 +30,14 @@ build:
 
 requirements:
   build:
+    - netcdf4
     - git
     - cmake
     - make
     - {{ compiler('cxx') }}
+  run:
+    - netcdf4
+
 test:
   # imports:
   #   - ctest
